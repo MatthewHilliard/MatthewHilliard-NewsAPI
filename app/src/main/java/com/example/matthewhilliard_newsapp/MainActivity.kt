@@ -1,5 +1,6 @@
 package com.example.matthewhilliard_newsapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: ArticleListAdapter
     private lateinit var articleRecyclerView: RecyclerView
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,7 +45,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateAdapter(articles: List<Article>) {
-        adapter = ArticleListAdapter(articles.toMutableList())
+        adapter = ArticleListAdapter(articles.toMutableList()) { article ->
+            val bundle = Bundle().apply {
+                putSerializable("article", article)
+            }
+            val fragment = ArticleDetailFragment().apply {
+                arguments = bundle
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
         articleRecyclerView.adapter = adapter
     }
 }
