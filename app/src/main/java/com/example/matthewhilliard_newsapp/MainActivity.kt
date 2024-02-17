@@ -11,52 +11,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var layoutManager: RecyclerView.LayoutManager
-    private lateinit var adapter: ArticleListAdapter
-    private lateinit var articleRecyclerView: RecyclerView
-
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        articleRecyclerView = findViewById(R.id.article_recycler_view)
-        layoutManager = LinearLayoutManager(this)
-        articleRecyclerView.layoutManager = layoutManager
-
-        fetchArticles()
-    }
-
-    private fun fetchArticles() {
-        val call: Call<NewsResponse> = api.getHeadlines()
-        call.enqueue(object : Callback<NewsResponse> {
-            override fun onResponse(call: Call<NewsResponse>, response: Response<NewsResponse>) {
-                if (response.isSuccessful) {
-                    val articles = response.body()?.articles ?: emptyList()
-                    updateAdapter(articles)
-                }
-            }
-
-            override fun onFailure(call: Call<NewsResponse>, t: Throwable) {
-                Log.d("MainActivity", "Failed to fetch articles")
-            }
-        })
-    }
-
-    private fun updateAdapter(articles: List<Article>) {
-        adapter = ArticleListAdapter(articles.toMutableList()) { article ->
-            val bundle = Bundle().apply {
-                putSerializable("article", article)
-            }
-            val fragment = ArticleDetailFragment().apply {
-                arguments = bundle
-            }
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit()
-        }
-        articleRecyclerView.adapter = adapter
     }
 }

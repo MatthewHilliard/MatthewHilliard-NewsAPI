@@ -11,12 +11,15 @@
             android:layout_height="wrap_content"
             android:text="Article Title"
             android:textStyle="bold"
-            android:textSize="26dp"/>
+            android:textColor="@color/black"
+            android:textSize="26dp"
+            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/article_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Article Description"/>
+            android:text="Article Description"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
