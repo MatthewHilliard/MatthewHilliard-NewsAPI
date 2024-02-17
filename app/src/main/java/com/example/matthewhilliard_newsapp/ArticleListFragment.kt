@@ -82,9 +82,12 @@ class ArticleListFragment : Fragment() {
     }
 
     private fun updateAdapter(articles: List<Article>) {
-        adapter = ArticleListAdapter(articles.toMutableList()) { article ->
+        val filteredArticles = articles.filter { !it.title.contains("[Removed]", ignoreCase = true) }
+
+        adapter = ArticleListAdapter(filteredArticles.toMutableList()) { article ->
             val bundle = Bundle().apply {
-                putSerializable("article", article)
+                putString("title", article.title)
+                putString("content", article.content)
             }
             val fragment = ArticleDetailFragment().apply {
                 arguments = bundle
